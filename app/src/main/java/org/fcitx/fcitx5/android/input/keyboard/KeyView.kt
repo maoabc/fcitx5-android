@@ -266,26 +266,26 @@ open class TextKeyView(ctx: Context, theme: Theme, def: KeyDef.Appearance.Text) 
 @SuppressLint("ViewConstructor")
 class AltTextKeyView(ctx: Context, theme: Theme, def: KeyDef.Appearance.AltText) :
     TextKeyView(ctx, theme, def) {
-    val altText = view(::AutoScaleTextView) {
-        isClickable = false
-        isFocusable = false
-        // TODO hardcoded alt text size
-        setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10.666667f)
-        setTypeface(typeface, Typeface.BOLD)
-        text = def.altText
-        textDirection = View.TEXT_DIRECTION_FIRST_STRONG_LTR
-        setTextColor(
-            when (def.variant) {
-                Variant.Normal, Variant.AltForeground, Variant.Alternative -> theme.altKeyTextColor
-                Variant.Accent -> theme.accentKeyTextColor
-            }
-        )
-    }
+    //val altText = view(::AutoScaleTextView) {
+    //    isClickable = false
+    //    isFocusable = false
+    //    // TODO hardcoded alt text size
+    //    setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10.666667f)
+    //    setTypeface(typeface, Typeface.BOLD)
+    //    text = def.altText
+    //    textDirection = View.TEXT_DIRECTION_FIRST_STRONG_LTR
+    //    setTextColor(
+    //        when (def.variant) {
+    //            Variant.Normal, Variant.AltForeground, Variant.Alternative -> theme.altKeyTextColor
+    //            Variant.Accent -> theme.accentKeyTextColor
+    //        }
+    //    )
+    //}
 
     init {
-        appearanceView.apply {
-            add(altText, lParams(wrapContent, wrapContent))
-        }
+        //appearanceView.apply {
+        //    add(altText, lParams(wrapContent, wrapContent))
+        //}
         applyLayout(resources.configuration.orientation)
     }
 
@@ -298,35 +298,36 @@ class AltTextKeyView(ctx: Context, theme: Theme, def: KeyDef.Appearance.AltText)
             topToTop = parentId
             bottomToBottom = parentId
         }
-        altText.visibility = View.VISIBLE
-        altText.updateLayoutParams<ConstraintLayout.LayoutParams> {
-            // reset
-            bottomToBottom = unset; bottomMargin = 0
-            // set
-            topToTop = parentId; topMargin = vMargin
-            leftToLeft = unset
-            rightToRight = parentId; rightMargin = hMargin + dp(4)
-        }
+        //altText.visibility = View.VISIBLE
+        //altText.updateLayoutParams<ConstraintLayout.LayoutParams> {
+        //    // reset
+        //    bottomToBottom = unset; bottomMargin = 0
+        //    // set
+        //    topToTop = parentId; topMargin = vMargin
+        //    leftToLeft = unset
+        //    rightToRight = parentId; rightMargin = hMargin + dp(4)
+        //}
     }
 
     private fun applyBottomAltTextPosition() {
         mainText.updateLayoutParams<ConstraintLayout.LayoutParams> {
             // reset
-            bottomToBottom = unset
+            topMargin = 0
+            bottomToTop = unset
             // set
-            topToTop = parentId; topMargin = vMargin
-            bottomToTop = altText.existingOrNewId
+            topToTop = parentId
+            bottomToBottom = parentId
         }
-        altText.visibility = View.VISIBLE
-        altText.updateLayoutParams<ConstraintLayout.LayoutParams> {
-            // reset
-            topToTop = unset; topMargin = 0
-            rightMargin = 0
-            // set
-            leftToLeft = parentId
-            rightToRight = parentId
-            bottomToBottom = parentId; bottomMargin = vMargin + dp(2)
-        }
+        //altText.visibility = View.VISIBLE
+        //altText.updateLayoutParams<ConstraintLayout.LayoutParams> {
+        //    // reset
+        //    topToTop = unset; topMargin = 0
+        //    rightMargin = 0
+        //    // set
+        //    leftToLeft = parentId
+        //    rightToRight = parentId
+        //    bottomToBottom = parentId; bottomMargin = vMargin + dp(2)
+        //}
     }
 
     private fun applyNoAltTextPosition() {
@@ -338,7 +339,7 @@ class AltTextKeyView(ctx: Context, theme: Theme, def: KeyDef.Appearance.AltText)
             topToTop = parentId
             bottomToBottom = parentId
         }
-        altText.visibility = View.GONE
+//        altText.visibility = View.GONE
     }
 
     private fun applyLayout(orientation: Int) {

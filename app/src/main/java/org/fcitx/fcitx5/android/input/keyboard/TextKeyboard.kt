@@ -239,8 +239,8 @@ class TextKeyboard(
     private fun updatePunctuationKeys() {
         textKeys.forEach {
             if (it is AltTextKeyView) {
-                it.def as KeyDef.Appearance.AltText
-                it.altText.text = transformPunctuation(it.def.altText)
+//                it.def as KeyDef.Appearance.AltText
+//                it.altText.text = transformPunctuation(it.def.altText)
             } else {
                 it.def as KeyDef.Appearance.Text
                 it.mainText.text = it.def.displayText.let { str ->
