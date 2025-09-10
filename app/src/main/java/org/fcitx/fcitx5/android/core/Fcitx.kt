@@ -382,6 +382,11 @@ class Fcitx(private val context: Context) : FcitxAPI, FcitxLifecycleOwner {
         @JvmStatic
         fun handleFcitxEvent(type: Int, params: Array<Any>) {
             val event = FcitxEvent.create(type, params)
+            handleFcitxEventInternal(event)
+        }
+
+        @JvmStatic
+        private fun handleFcitxEventInternal(event: FcitxEvent<out Any>) {
             Timber.d("Handling $event")
             if (event is FcitxEvent.ReadyEvent) {
                 if (firstRun) {
@@ -398,6 +403,18 @@ class Fcitx(private val context: Context) : FcitxAPI, FcitxLifecycleOwner {
         private fun onFirstRun() {
             Timber.i("onFirstRun")
             firstRun = false
+        }
+
+        @Suppress("unused")
+        @JvmStatic
+        fun handleCandidateListEvent(total: Int, candidates: Array<String>) {
+            val candidateListEvent = FcitxEvent.CandidateListEvent(
+                FcitxEvent.CandidateListEvent.Data(
+                    total,
+                    candidates
+                )
+            )
+            handleFcitxEventInternal(candidateListEvent)
         }
 
         /**

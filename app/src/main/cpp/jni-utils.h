@@ -80,7 +80,7 @@ public:
             : JString(env, chars, strlen(chars)) {}
 
     JString(JNIEnv *env, const std::string &string)
-            : JString(env, string.c_str(),string.size()) {}
+            : JString(env, string.c_str(), string.size()) {}
 
     ~JString() {
         if (jch_ != tmp) {
@@ -127,6 +127,7 @@ public:
     jclass Fcitx;
     jmethodID ShowToast;
     jmethodID HandleFcitxEvent;
+    jmethodID HandleFcitxCandidateListEvent;
 
     jclass InputMethodEntry;
     jmethodID InputMethodEntryInit;
@@ -180,6 +181,8 @@ public:
         Fcitx = reinterpret_cast<jclass>(env->NewGlobalRef(env->FindClass("org/fcitx/fcitx5/android/core/Fcitx")));
         ShowToast = env->GetStaticMethodID(Fcitx, "showToast", "(Ljava/lang/String;)V");
         HandleFcitxEvent = env->GetStaticMethodID(Fcitx, "handleFcitxEvent", "(I[Ljava/lang/Object;)V");
+        HandleFcitxCandidateListEvent = env->GetStaticMethodID(Fcitx, "handleCandidateListEvent", "(I[Ljava/lang/String;)V");
+
 
         InputMethodEntry = reinterpret_cast<jclass>(env->NewGlobalRef(env->FindClass("org/fcitx/fcitx5/android/core/InputMethodEntry")));
         InputMethodEntryInit = env->GetMethodID(InputMethodEntry, "<init>", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V");

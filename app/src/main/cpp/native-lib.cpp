@@ -590,11 +590,8 @@ Java_org_fcitx_fcitx5_android_core_Fcitx_startupFcitx(
         for (const auto &s: candidates) {
             env->SetObjectArrayElement(candidatesArray, i++, JString(env, s));
         }
-        auto vararg = JRef<jobjectArray>(env, env->NewObjectArray(2, GlobalRef->Object, nullptr));
-        auto candidatesCount = JRef(env, env->NewObject(GlobalRef->Integer, GlobalRef->IntegerInit, size));
-        env->SetObjectArrayElement(vararg, 0, *candidatesCount);
-        env->SetObjectArrayElement(vararg, 1, *candidatesArray);
-        env->CallStaticVoidMethod(GlobalRef->Fcitx, GlobalRef->HandleFcitxEvent, 0, *vararg);
+        env->CallStaticVoidMethod(GlobalRef->Fcitx, GlobalRef->HandleFcitxCandidateListEvent, size, *candidatesArray);
+
     };
     auto commitStringCallback = [](const std::string &str, const int cursor) {
         auto env = GlobalRef->AttachEnv();
