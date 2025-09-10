@@ -54,19 +54,38 @@ public:
     T operator*() { return ref_; }
 };
 
+extern size_t utf16_from_utf8(std::string_view sv, jchar *tbuf, size_t tlen);
+
 class JString {
 private:
     JNIEnv *env_;
     jstring jstring_;
+#define STACK_BUF_SIZE 256
+    jchar tmp[STACK_BUF_SIZE];
+    jchar *jch_;
 
 public:
+    JString(JNIEnv *env, const char *chars, size_t len)
+            : env_(env) {
+        if (len > STACK_BUF_SIZE) {
+            jch_ = new jchar[len];
+        } else {
+            jch_ = tmp;
+        }
+        size_t utf16_len = utf16_from_utf8(std::string_view(chars, len), jch_, len);
+        jstring_ = env->NewString(jch_, utf16_len);
+    }
+
     JString(JNIEnv *env, const char *chars)
-            : env_(env), jstring_(env->NewStringUTF(chars)) {}
+            : JString(env, chars, strlen(chars)) {}
 
     JString(JNIEnv *env, const std::string &string)
-            : JString(env, string.c_str()) {}
+            : JString(env, string.c_str(),string.size()) {}
 
     ~JString() {
+        if (jch_ != tmp) {
+            delete[] jch_;
+        }
         env_->DeleteLocalRef(jstring_);
     }
 
